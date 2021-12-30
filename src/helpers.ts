@@ -4,12 +4,12 @@ import { exec } from 'child_process';
 import { outputChannel } from "./singletons";
 
 export function getCWD(): string | undefined {
-	if (!vscode.workspace.workspaceFolders) {
+    if (!vscode.workspace.workspaceFolders) {
         outputChannel().appendLine('Warning: Unable to read cwd because no folders are open');
-		return undefined;
-	}
+        return undefined;
+    }
 
-	return vscode.workspace.workspaceFolders[0].uri.path;
+    return vscode.workspace.workspaceFolders[0].uri.path;
 }
 
 export function getCurrentBranch(): Promise<string> {
