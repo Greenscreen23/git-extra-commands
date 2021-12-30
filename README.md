@@ -18,7 +18,11 @@ The output of the git commands, as well as any debug logs will be printed to the
 
 This extension requires git to be installed. \([git-scm.com](https://git-scm.com)\)
 
+We also recommend using the GitLens vs-code extension to launch the interactive rebase, as we are currently not using a terminal to start the interactive rebase.
+
 ## Known Issues
+
+Currently, the only supported rebase editor is vs-code and its extension GitLens, as we are currently not using a terminal to start the interactive rebase.
 
 We are currently working on switching to the vscode git api instead of talking to git directly.
 
