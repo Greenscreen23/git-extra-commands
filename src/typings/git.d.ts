@@ -1,6 +1,7 @@
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
- *  Licensed under the MIT License. See License.txt on https://github.com/microsoft/vscode/ for license information.
+ *  Licensed under the MIT License. See License.txt on https://github.com/microsoft/vscode/
+ *  for license information.
  *--------------------------------------------------------------------------------------------*/
 
 import { Uri, Event, Disposable, ProviderResult } from 'vscode';
