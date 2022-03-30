@@ -34,6 +34,12 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
+        exec ('git fetch', { cwd: getCWD() }, (err, stdout, stderr) => {
+            outputChannel().appendLine('Fetching current state of the branch');
+            outputChannel().appendLine(stdout);
+            outputChannel().appendLine(stderr);
+        });
+
         exec('git reset --hard origin/' + branch, { cwd: getCWD() }, (err, stdout, stderr) => {
             outputChannel().appendLine('Starting hard reset:');
             outputChannel().appendLine(stdout);
