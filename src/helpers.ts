@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
 import { exec } from 'child_process';
 
-import { outputChannel } from "./singletons";
+import { outputChannel } from './outputChannel';
+import { gitApi } from './gitApi';
 
 export function getCWD(): string | undefined {
     if (!vscode.workspace.workspaceFolders) {
@@ -12,15 +13,11 @@ export function getCWD(): string | undefined {
     return vscode.workspace.workspaceFolders[0].uri.path;
 }
 
-export function getCurrentBranch(): Promise<string> {
-    return new Promise((resolve, reject) => {
-        exec('git rev-parse --abbrev-ref HEAD', { cwd: getCWD() }, (err, stdout, stderr) => {
-            if (err) {
-                outputChannel().append('Error: ');
-                outputChannel().appendLine(stderr);
-                reject(stderr);
-            }
-            resolve(stdout);
-        });
-    });
+export function getCurrentBranch(): string | undefined {
+    const branch = gitApi()?.repositories[0].state.HEAD?.name;
+    if (branch === undefined) {
+        outputChannel().appendLine('Warning: Unable to read current branch because no repository was found.');
+        return undefined;
+    }
+    return branch;
 }
