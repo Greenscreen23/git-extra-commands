@@ -2,12 +2,18 @@ import * as vscode from 'vscode';
 import { exec } from 'child_process';
 
 import { outputChannel } from './outputChannel';
-import { getCWD, getCurrentBranch } from './helpers';
+import { getCWD, getCurrentBranch, getAllBranches, fetch } from './helpers';
 
 export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(vscode.commands.registerCommand('git-extra-commands.interactive-rebase', async () => {
-        const branch = await vscode.window.showInputBox({ placeHolder: 'Select a branch to rebase onto' } as vscode.InputBoxOptions);
+        let branches = getAllBranches();
+        if (!branches) {
+            outputChannel().appendLine('Warning: Unable to read the branches of this repo, showing none');
+            branches = [];
+        }
+
+        const branch = await vscode.window.showQuickPick(branches, { placeHolder: 'Select a branch to rebase onto' } as vscode.InputBoxOptions);
         if(!branch) {
             outputChannel().appendLine('Warning: Recieved abort signal for "input rebase branch"');
             return;
@@ -34,11 +40,7 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
-        exec ('git fetch', { cwd: getCWD() }, (err, stdout, stderr) => {
-            outputChannel().appendLine('Fetching current state of the branch');
-            outputChannel().appendLine(stdout);
-            outputChannel().appendLine(stderr);
-        });
+        await fetch();
 
         exec('git reset --hard origin/' + branch, { cwd: getCWD() }, (err, stdout, stderr) => {
             outputChannel().appendLine('Starting hard reset:');

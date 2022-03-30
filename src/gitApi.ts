@@ -6,7 +6,7 @@ let _gitApi: API | undefined;
 export function gitApi() {
     const extension = vscode.extensions.getExtension<GitExtension>('vscode.git')?.exports;
     if (!extension?.enabled) {
-        outputChannel().appendLine('Warning: The vscode git extension has not been enabled yet.');
+        outputChannel().appendLine('Warning: The vscode git extension is not enabled.');
         return undefined;
     }
     if (!_gitApi) {
