@@ -25,7 +25,17 @@
         "command": "git-extra-commands.hard-reset",
         "title": "Extra Git Commands: Hard reset to the current state of origin"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Extra Git Commands",
+      "properties": {
+        "git-extra-commands.hardReset.showWarning": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether the extension should show a warning and ask the user for permission before performing a hard reset."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

@@ -27,10 +27,16 @@ export function activate(context: vscode.ExtensionContext) {
     }));
 
     context.subscriptions.push(vscode.commands.registerCommand('git-extra-commands.hard-reset', async () => {
-        const ok = await vscode.window.showInformationMessage('You are about to overwrite your local changes with the state of origin.\n\nAre you sure to continue?', { modal: true }, 'Ok', 'Ok, Don\'t Ask Again');
-        if (!ok) {
-            outputChannel().appendLine('Error: Recieved abort signal for "confirm hard reset"');
-            return;
+        const showWarning = vscode.workspace.getConfiguration('git-extra-commands').get<boolean>('hardReset.showWarning');
+        if (showWarning) {
+            const ok = await vscode.window.showInformationMessage('You are about to overwrite your local changes with the state of origin.\n\nAre you sure to continue?', { modal: true }, 'Ok', 'Ok, Don\'t Ask Again');
+            if (ok === 'Ok, Don\'t Ask Again') {
+                vscode.workspace.getConfiguration('git-extra-commands').update('hardReset.showWarning', false, vscode.ConfigurationTarget.Global);
+            }
+            if (!ok) {
+                outputChannel().appendLine('Error: Recieved abort signal for "confirm hard reset"');
+                return;
+            }
         }
 
         const branch = getCurrentBranch();
