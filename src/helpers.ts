@@ -7,7 +7,7 @@ import { RefType } from './typings/git';
 
 export function getCWD(): string | undefined {
     if (!vscode.workspace.workspaceFolders) {
-        outputChannel().appendLine('Warning: Unable to read cwd because no folders are open');
+        outputChannel().appendLine('Error: Unable to read cwd because no folders are open');
         return undefined;
     }
 
@@ -17,19 +17,19 @@ export function getCWD(): string | undefined {
 export function getCurrentBranch(): string | undefined {
     const api = gitApi();
     if (!api) {
-        outputChannel().appendLine('Warning: Unable to read current branch because there was no api found.');
+        outputChannel().appendLine('Error: Unable to read current branch because there was no api found.');
         return undefined;
     }
 
     const head = api.repositories[0].state.HEAD;
     if (!head) {
-        outputChannel().appendLine('Warning: Unable to read current branch because no head was found.');
+        outputChannel().appendLine('Error: Unable to read current branch because no head was found.');
         return undefined;
     }
 
     const name = head.name;
     if (name === undefined) {
-        outputChannel().appendLine('Warning: Unable to read current branch because the name of the head was not found.');
+        outputChannel().appendLine('Error: Unable to read current branch because the name of the head was not found.');
         return undefined;
     }
 
@@ -46,7 +46,7 @@ export function getAllBranches(): string[] | undefined {
 
     const api = gitApi();
     if (!api) {
-        outputChannel().appendLine('Warning: Unable to get all branches because there was no api found.');
+        outputChannel().appendLine('Error: Unable to get all branches because there was no api found.');
         return undefined;
     }
 

@@ -15,7 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
 
         const branch = await vscode.window.showQuickPick(branches, { placeHolder: 'Select a branch to rebase onto' } as vscode.InputBoxOptions);
         if(!branch) {
-            outputChannel().appendLine('Warning: Recieved abort signal for "input rebase branch"');
+            outputChannel().appendLine('Error: Recieved abort signal for "input rebase branch"');
             return;
         }
 
@@ -29,7 +29,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand('git-extra-commands.hard-reset', async () => {
         const ok = await vscode.window.showInformationMessage('You are about to overwrite your local changes with the state of origin.\n\nAre you sure to continue?', { modal: true }, 'Ok', 'Ok, Don\'t Ask Again');
         if (!ok) {
-            outputChannel().appendLine('Warning: Recieved abort signal for "confirm hard reset"');
+            outputChannel().appendLine('Error: Recieved abort signal for "confirm hard reset"');
             return;
         }
 
