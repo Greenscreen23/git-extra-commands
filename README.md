@@ -4,11 +4,11 @@ The Extra Git Commands extension includes two additional vscode commands. One fo
 
 ## Features
 
-To start an interactive rebase launch the command "Extra Git Commands: Start an interactive rebase" (`git-extra-commands.interactive-rebase`). You will then be asked for the branch, you want to rebase the current branch onto.
+To start an interactive rebase launch the command "Extra Git Commands: Start an interactive rebase" (`git-extra-commands.interactiveRebase`). You will then be asked for the branch, you want to rebase the current branch onto.
 
 ![Branch Input](images/branch-input.png)
 
-To reset the current branch to the current state of origin launch the command "Extra Git Commands: Hard reset to the current state of origin"(`git-extra-commands.hard-reset`).
+To reset the current branch to the current state of origin launch the command "Extra Git Commands: Hard reset to the current state of origin"(`git-extra-commands.hardReset`).
 
 You can also set shortcuts for those commands ;)
 

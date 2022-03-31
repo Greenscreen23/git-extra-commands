@@ -11,18 +11,18 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:git-extra-commands.interactive-rebase",
-    "onCommand:git-extra-commands.hard-reset"
+    "onCommand:git-extra-commands.interactiveRebase",
+    "onCommand:git-extra-commands.hardReset"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "git-extra-commands.interactive-rebase",
+        "command": "git-extra-commands.interactiveRebase",
         "title": "Extra Git Commands: Start an interactive rebase"
       },
       {
-        "command": "git-extra-commands.hard-reset",
+        "command": "git-extra-commands.hardReset",
         "title": "Extra Git Commands: Hard reset to the current state of origin"
       }
     ],

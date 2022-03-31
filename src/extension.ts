@@ -6,7 +6,7 @@ import { getCWD, getCurrentBranch, getAllBranches, fetch } from './helpers';
 
 export function activate(context: vscode.ExtensionContext) {
 
-    context.subscriptions.push(vscode.commands.registerCommand('git-extra-commands.interactive-rebase', async () => {
+    context.subscriptions.push(vscode.commands.registerCommand('git-extra-commands.interactiveRebase', async () => {
         let branches = getAllBranches();
         if (!branches) {
             outputChannel().appendLine('Warning: Unable to read the branches of this repo, showing none');
@@ -26,7 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
         });
     }));
 
-    context.subscriptions.push(vscode.commands.registerCommand('git-extra-commands.hard-reset', async () => {
+    context.subscriptions.push(vscode.commands.registerCommand('git-extra-commands.hardReset', async () => {
         const showWarning = vscode.workspace.getConfiguration('git-extra-commands').get<boolean>('hardReset.showWarning');
         if (showWarning) {
             const ok = await vscode.window.showInformationMessage('You are about to overwrite your local changes with the state of origin.\n\nAre you sure to continue?', { modal: true }, 'Ok', 'Ok, Don\'t Ask Again');
