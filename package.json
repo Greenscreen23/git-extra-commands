@@ -9,7 +9,7 @@
     "name": "Lukas Hagen"
   },
   "engines": {
-    "vscode": "^1.63.0"
+    "vscode": "^1.65.0"
   },
   "categories": [
     "Other"
@@ -36,7 +36,11 @@
         "git-extra-commands.interactiveRebase.rebaseMode": {
           "type": "string",
           "default": "useTerminal",
-          "enum": ["avoidTerminal", "switchEditor", "useTerminal"],
+          "enum": [
+            "avoidTerminal",
+            "switchEditor",
+            "useTerminal"
+          ],
           "enumDescriptions": [
             "This uses a normal process instead of the integrated terminal for the interactive rebase. It is recommended to set core.editor to a graphical editor (e.g. vscode) in your git config, because a normal process cannot execute terminal editors like vim or nano",
             "Experimental: Switches the core.editor git setting to vscode only for the duration of the rebase. This is intended to be used with the gitlens extension and the interactive rebase editor enabled, and when you want to continue using your normal editor outside from vscode.",
@@ -71,7 +75,7 @@
     "@typescript-eslint/eslint-plugin": "^5.1.0",
     "@typescript-eslint/parser": "^5.1.0",
     "@vscode/test-electron": "^1.6.2",
-    "esbuild": "^0.14.9",
+    "esbuild": "^0.14.29",
     "eslint": "^8.1.0",
     "glob": "^7.1.7",
     "mocha": "^9.1.3",

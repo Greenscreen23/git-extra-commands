@@ -21,11 +21,3 @@ This extension requires git to be installed. \([git-scm.com](https://git-scm.com
 We are currently working on integrating tests into the extension. Currently, the tests are the default ones created bei Yeoman.
 
 If you have any issues, please consider submitting them on [github](https://github.com/Greenscreen23/git-extra-commands)
-
-## Release Notes
-
-### 1.0.0
-
-Initial release of Extra Git Commands.
-
-Added the commands for interactive rebase and hard reset.
