@@ -3,6 +3,7 @@ import { exec } from 'child_process';
 
 import { outputChannel } from './outputChannel';
 import { getCWD, getCurrentBranch, getAllBranches, fetch } from './helpers';
+import { terminal } from './terminal';
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -19,19 +20,27 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
-        exec('git rebase -i ' + branch, { cwd: getCWD() }, (err, stdout, stderr) => {
-            outputChannel().appendLine('Starting rebase:');
-            outputChannel().appendLine(stdout);
-            outputChannel().appendLine(stderr);
-        });
+        let avoidTerminal = vscode.workspace.getConfiguration('git-extra-commands').get<boolean>('interactiveRebase.avoidTerminal');
+        if (avoidTerminal) {
+            exec('git rebase -i ' + branch, { cwd: getCWD() }, (err, stdout, stderr) => {
+                outputChannel().appendLine('Starting rebase:');
+                outputChannel().appendLine(stdout);
+                outputChannel().appendLine(stderr);
+            });
+            return;
+        }
+
+        const interactiveRebaseTerminal = terminal();
+        interactiveRebaseTerminal.show(false);
+        interactiveRebaseTerminal.sendText('git rebase -i ' + branch, true);
     }));
 
     context.subscriptions.push(vscode.commands.registerCommand('git-extra-commands.hardReset', async () => {
-        const showWarning = vscode.workspace.getConfiguration('git-extra-commands').get<boolean>('hardReset.showWarning');
-        if (showWarning) {
+        let hideWarning = vscode.workspace.getConfiguration('git-extra-commands').get<boolean>('hardReset.hideWarning');
+        if (!hideWarning) {
             const ok = await vscode.window.showInformationMessage('You are about to overwrite your local changes with the state of origin.\n\nAre you sure to continue?', { modal: true }, 'Ok', 'Ok, Don\'t Ask Again');
             if (ok === 'Ok, Don\'t Ask Again') {
-                vscode.workspace.getConfiguration('git-extra-commands').update('hardReset.showWarning', false, vscode.ConfigurationTarget.Global);
+                vscode.workspace.getConfiguration('git-extra-commands').update('hardReset.hideWarning', true, vscode.ConfigurationTarget.Global);
             }
             if (!ok) {
                 outputChannel().appendLine('Error: Recieved abort signal for "confirm hard reset"');

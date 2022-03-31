@@ -29,9 +29,14 @@
     "configuration": {
       "title": "Extra Git Commands",
       "properties": {
-        "git-extra-commands.hardReset.showWarning": {
+        "git-extra-commands.interactiveRebase.avoidTerminal": {
           "type": "boolean",
-          "default": true,
+          "default": false,
+          "description": "Whether this extension should use vscodes terminal or normal process for executing the rebase. A normal process cannot execute terminal editors like nano or vim, so you should consider setting core.editor in your git settings to a graphical editor (e.g. vscode) if you enable this."
+        },
+        "git-extra-commands.hardReset.hideWarning": {
+          "type": "boolean",
+          "default": false,
           "description": "Whether the extension should show a warning and ask the user for permission before performing a hard reset."
         }
       }
