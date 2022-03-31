@@ -1,32 +1,24 @@
 # Extra Git Commands
 
-The Extra Git Commands extension includes two additional vscode commands. One for starting an interactive rebase, and one for hard resetting the state of the repository to the current state of origin.
+This is a small extension to vscode, which allows setting shortcuts to two more git features.
 
 ## Features
 
-To start an interactive rebase launch the command "Extra Git Commands: Start an interactive rebase" (`git-extra-commands.interactiveRebase`). You will then be asked for the branch, you want to rebase the current branch onto.
+### Interactive Rebase
 
-![Branch Input](images/branch-input.png)
+The command `git-extra-commands.interactiveRebase` starts an interactive rebase in the current open directory. By default, this is using vscodes terminal, but it can also be set to using a normal process. I recommend using the gitlens extension and setting `core.editor` in the git settings to a graphical editor (e.g. vscode), because normal processes cannot execute terminal editors like vim or nano.   
 
-To reset the current branch to the current state of origin launch the command "Extra Git Commands: Hard reset to the current state of origin"(`git-extra-commands.hardReset`).
+### Hard Reset
 
-You can also set shortcuts for those commands ;)
-
-The output of the git commands, as well as any debug logs will be printed to the "Extra-Git-Commands" output channel.
+The command `git-extra-commands.hardReset` performs a `git reset --hard origin/<currentBranch>` command. This can be useful, when somebody else force pushed this branch and you only want to view their progress. Because it works like the counterpart to force pushing, I like to call it "force pull", even though that has a different semantic for git.
 
 ## Requirements
 
 This extension requires git to be installed. \([git-scm.com](https://git-scm.com)\)
 
-We also recommend using the GitLens vs-code extension to launch the interactive rebase, as we are currently not using a terminal to start the interactive rebase.
-
 ## Known Issues
 
-Currently, the only supported rebase editor is vs-code and its extension GitLens, as we are currently not using a terminal to start the interactive rebase.
-
-We are currently working on switching to the vscode git api instead of talking to git directly.
-
-We are also currently working on integrating tests into the extension. Currently, the tests are the default ones created bei Yeoman.
+We are currently working on integrating tests into the extension. Currently, the tests are the default ones created bei Yeoman.
 
 If you have any issues, please consider submitting them on [github](https://github.com/Greenscreen23/git-extra-commands)
 

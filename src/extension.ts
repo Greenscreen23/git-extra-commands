@@ -22,48 +22,17 @@ export function activate(context: vscode.ExtensionContext) {
         }
 
         let rebaseMode = vscode.workspace.getConfiguration('git-extra-commands').get<string>('interactiveRebase.rebaseMode');
-        if (rebaseMode === 'useTerminal') {
-            const interactiveRebaseTerminal = terminal();
-            interactiveRebaseTerminal.show(false);
-            interactiveRebaseTerminal.sendText('git rebase -i ' + branch, true);
+        if (rebaseMode === 'avoidTerminal') {
+            rebaseProcess(branch);
             return;
         }
-
-        let localEditor;
         if (rebaseMode === 'switch') {
-            const api = gitApi();
-            if (!api) {
-                outputChannel().appendLine('Error: Failed to switch editor because git api was not found.');
-                return;
-            }
-            try {
-                localEditor = await api.repositories[0].getConfig('core.editor');
-            } catch (err) {
-                localEditor = undefined;
-            }
-
-            api.repositories[0].setConfig('core.editor', 'code --wait');
+            rebaseSwitch(branch);
+            return;
         }
-
-        exec('git rebase -i ' + branch, { cwd: getCWD() }, (err, stdout, stderr) => {
-            outputChannel().appendLine('Starting rebase:');
-            outputChannel().appendLine(stdout);
-            outputChannel().appendLine(stderr);
-        });
-
-        if (rebaseMode === 'switch') {
-            if (localEditor === undefined) {
-                exec('git config --local --unset core.editor', { cwd: getCWD() });
-                return;
-            }
-
-            const api = gitApi();
-            if (!api) {
-                outputChannel().appendLine('Error: Failed to switch editor because git api was not found.');
-                return;
-            }
-
-            api.repositories[0].setConfig('core.editor', localEditor);
+        if (rebaseMode === 'useTerminal') {
+            rebaseTerminal(branch);
+            return;
         }
     }));
 
@@ -80,26 +49,73 @@ export function activate(context: vscode.ExtensionContext) {
             }
         }
 
-        const branch = getCurrentBranch();
-        if (!branch) {
+        const currentBranch = getCurrentBranch();
+        if (!currentBranch) {
             outputChannel().appendLine('Error: Unable to read current branch');
             vscode.window.showInformationMessage('Extra Git Commands: Unable to read current branch');
             return;
         }
 
-        const api = gitApi();
-        if (!api) {
-            outputChannel().appendLine('Error: Unable to fetch origin state because api was undefined');
-            return;
-        }
-        await api.repositories[0].fetch();
-
-        exec('git reset --hard origin/' + branch, { cwd: getCWD() }, (err, stdout, stderr) => {
-            outputChannel().appendLine('Starting hard reset:');
-            outputChannel().appendLine(stdout);
-            outputChannel().appendLine(stderr);
-        });
+        hardReset(currentBranch);
     }));
+}
+
+function rebaseProcess(branch: string) {
+    exec('git rebase -i ' + branch, { cwd: getCWD() }, (err, stdout, stderr) => {
+        outputChannel().appendLine('Starting rebase:');
+        outputChannel().appendLine(stdout);
+        outputChannel().appendLine(stderr);
+    });
+}
+
+async function rebaseSwitch(branch: string) {
+    const api = gitApi();
+    if (!api) {
+        outputChannel().appendLine('Error: Failed to switch editor because git api was not found.');
+        return;
+    }
+
+    let localEditor;
+    try {
+        localEditor = await api.repositories[0].getConfig('core.editor');
+    } catch (err) {
+        localEditor = undefined;
+    }
+
+    api.repositories[0].setConfig('core.editor', 'code --wait');
+
+    exec('git rebase -i ' + branch, { cwd: getCWD() }, (err, stdout, stderr) => {
+        outputChannel().appendLine('Starting rebase:');
+        outputChannel().appendLine(stdout);
+        outputChannel().appendLine(stderr);
+    });
+
+    if (localEditor === undefined) {
+        exec('git config --local --unset core.editor', { cwd: getCWD() });
+    } else {
+        api.repositories[0].setConfig('core.editor', localEditor);
+    }
+}
+
+function rebaseTerminal(branch: string) {
+    const interactiveRebaseTerminal = terminal();
+    interactiveRebaseTerminal.show(false);
+    interactiveRebaseTerminal.sendText('git rebase -i ' + branch, true);
+}
+
+async function hardReset(currentBranch: string) {
+    const api = gitApi();
+    if (!api) {
+        outputChannel().appendLine('Error: Unable to fetch origin state because api was undefined');
+        return;
+    }
+    await api.repositories[0].fetch();
+
+    exec('git reset --hard origin/' + currentBranch, { cwd: getCWD() }, (err, stdout, stderr) => {
+        outputChannel().appendLine('Starting hard reset:');
+        outputChannel().appendLine(stdout);
+        outputChannel().appendLine(stderr);
+    });
 }
 
 export function deactivate() {}
