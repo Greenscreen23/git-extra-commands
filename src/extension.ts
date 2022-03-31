@@ -26,7 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
             rebaseProcess(branch);
             return;
         }
-        if (rebaseMode === 'switch') {
+        if (rebaseMode === 'switchEditor') {
             rebaseSwitch(branch);
             return;
         }

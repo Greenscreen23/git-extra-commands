@@ -2,8 +2,12 @@
   "name": "git-extra-commands",
   "displayName": "Extra Git Commands",
   "description": "This extension provies vscode commands for starting an interactive rebase and performing a hard reset to the current state of origin.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "repository": "https://github.com/Greenscreen23/git-extra-commands",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "author": {
+    "name": "Lukas Hagen"
+  },
   "engines": {
     "vscode": "^1.63.0"
   },
@@ -32,7 +36,7 @@
         "git-extra-commands.interactiveRebase.rebaseMode": {
           "type": "string",
           "default": "useTerminal",
-          "enum": ["avoidTerminal", "switch", "useTerminal"],
+          "enum": ["avoidTerminal", "switchEditor", "useTerminal"],
           "enumDescriptions": [
             "This uses a normal process instead of the integrated terminal for the interactive rebase. It is recommended to set core.editor to a graphical editor (e.g. vscode) in your git config, because a normal process cannot execute terminal editors like vim or nano",
             "Experimental: Switches the core.editor git setting to vscode only for the duration of the rebase. This is intended to be used with the gitlens extension and the interactive rebase editor enabled, and when you want to continue using your normal editor outside from vscode.",
