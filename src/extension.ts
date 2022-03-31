@@ -82,7 +82,7 @@ async function rebaseSwitch(branch: string) {
         localEditor = undefined;
     }
 
-    api.repositories[0].setConfig('core.editor', 'code --wait');
+    await api.repositories[0].setConfig('core.editor', 'code --wait');
 
     exec('git rebase -i ' + branch, { cwd: getCWD() }, (err, stdout, stderr) => {
         outputChannel().appendLine('Starting rebase:');
