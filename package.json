@@ -29,10 +29,15 @@
     "configuration": {
       "title": "Extra Git Commands",
       "properties": {
-        "git-extra-commands.interactiveRebase.avoidTerminal": {
-          "type": "boolean",
-          "default": false,
-          "description": "Whether this extension should use vscodes terminal or normal process for executing the rebase. A normal process cannot execute terminal editors like nano or vim, so you should consider setting core.editor in your git settings to a graphical editor (e.g. vscode) if you enable this."
+        "git-extra-commands.interactiveRebase.rebaseMode": {
+          "type": "string",
+          "default": "useTerminal",
+          "enum": ["avoidTerminal", "switch", "useTerminal"],
+          "enumDescriptions": [
+            "This uses a normal process instead of the integrated terminal for the interactive rebase. It is recommended to set core.editor to a graphical editor (e.g. vscode) in your git config, because a normal process cannot execute terminal editors like vim or nano",
+            "Experimental: Switches the core.editor git setting to vscode only for the duration of the rebase. This is intended to be used with the gitlens extension and the interactive rebase editor enabled, and when you want to continue using your normal editor outside from vscode.",
+            "Uses vscodes terminal to start the rebase. The terminal should be shown if it is not present."
+          ]
         },
         "git-extra-commands.hardReset.hideWarning": {
           "type": "boolean",

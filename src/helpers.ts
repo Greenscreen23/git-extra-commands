@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import { exec } from 'child_process';
 
 import { outputChannel } from './outputChannel';
 import { gitApi } from './gitApi';
@@ -57,18 +56,4 @@ export function getAllBranches(): string[] | undefined {
         .filter(name => name !== undefined) as string[] | undefined;
 
     return branches;
-}
-
-export function fetch(): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-        outputChannel().appendLine('Fetching current state of the branch');
-        exec('git fetch', { cwd: getCWD() }, (err, stdout, stderr) => {
-            outputChannel().appendLine(stdout);
-            outputChannel().appendLine(stderr);
-            if (err) {
-                reject();
-            }
-            resolve();
-        });
-    });
 }
